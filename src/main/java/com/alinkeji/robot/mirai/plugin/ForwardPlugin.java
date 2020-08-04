@@ -70,7 +70,7 @@ public class ForwardPlugin extends CQPlugin {
 
   @Override
   public int onGroupMessage(CoolQ cq, CQGroupMessageEvent event) {
-    logger.info("QQ:{}收到群:{}消息", cq.getSelfId(), event.getGroupId());
+    logger.info("QQ:{}收到群:{}(发送者角色:{})消息", cq.getSelfId(), event.getGroupId(),event.getSender().getRole());
     Map<Long,List<Long>> monitorForwardGroupMap = ((Map<Long, Map<Long,List<Long>>>) CommandPlugin.config
         .get(CommandEnum.MONITOR_GROUP_ID_LIST.getCommand())).get(cq.getSelfId());
     long group_id = event.getGroupId();
@@ -80,7 +80,11 @@ public class ForwardPlugin extends CQPlugin {
       return MESSAGE_IGNORE;
     }
     if (msgStack.containLike(StringUtil.getChineseString(msg), 0.8f)) {
-      logger.info("消息[{}]大于相似因子0.8，放弃本次转发", StringUtil.getChineseString(msg));
+      logger.info("消息[{}]大于相似因子0.8，放弃本次消息转发", StringUtil.getChineseString(msg));
+      return MESSAGE_IGNORE;
+    }
+    if(event.getSender().getRole().equals("member")){
+      logger.info("发送者角色:{},不为管理员，放弃本次消息转发", event.getSender().getRole());
       return MESSAGE_IGNORE;
     }
     msgStack.push(StringUtil.getChineseString(msg));
