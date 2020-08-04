@@ -1,11 +1,11 @@
 #!/bin/bash
-app='spring-coolq.jar'
-args='-Xms1024M -Xmx2048m'
+app='mirai-robot.jar'
+args='-Xms512M -Xmx1024m'
 cmd=$1
 pid=`ps -ef|grep java|grep $app|awk '{print $2}'`
 
 startup(){
-  nohup /usr/local/java/jdk1.8.0_201/bin/java -jar $args $app >> /root/web/app/coolq/logs/spring-coolq-`date +%Y%m%d`.log 2>&1 &
+  nohup /usr/local/java/jdk1.8.0_201/bin/java -jar $args $app >> /root/web/app/mirai/logs/mirai-robot-`date +%Y%m%d`.log 2>&1 &
 }
 
 if [ ! $cmd ]; then
