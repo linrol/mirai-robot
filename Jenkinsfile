@@ -28,7 +28,7 @@ pipeline {
 			  script {
 				  withEnv(['JENKINS_NODE_COOKIE=background_job']) {
 	          sh "cp -r ./target/*.jar ./run.sh /root/web/app/mirai/"
-	          sh "chmod +x /root/web/app/mirai/run.sh && cd /root/web/app/mirai/ && ./mirai.sh restart"
+	          sh "chmod +x /root/web/app/mirai/run.sh && cd /root/web/app/mirai/ && ./run.sh restart"
           }
         }
       }
