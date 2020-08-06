@@ -35,17 +35,21 @@ pipeline {
 		}
 
     stage('docker images build'){
-      sh '''
-    	  #镜像ID
-    		IMAGE_ID=$(docker images | grep "$JOB_NAME" | awk \'{print $3}\')
-    		# 构建docker镜像
-    		if [ -n "$IMAGE_ID" ]; then
-    			echo "$JOB_NAME镜像id=$IMAGE_ID,skip..."
-    		else
-    			echo "$JOB_NAME镜像work dir:`pwd`,start creating"
-    			docker build -t $JOB_NAME .
-    		fi
-    	'''
+      steps{
+        script{
+          sh '''
+            #镜像ID
+            IMAGE_ID=$(docker images | grep "$JOB_NAME" | awk \'{print $3}\')
+            # 构建docker镜像
+            if [ -n "$IMAGE_ID" ]; then
+              echo "$JOB_NAME镜像id=$IMAGE_ID,skip..."
+            else
+              echo "$JOB_NAME镜像work dir:`pwd`,start creating"
+              docker build -t $JOB_NAME .
+            fi
+          '''
+        }
+      }
     }
 
     stage('docker deploy run'){
