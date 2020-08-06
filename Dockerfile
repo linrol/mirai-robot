@@ -4,6 +4,6 @@
 # 基础镜像使用java
 FROM java:8
 
-ADD miraiOK.zip /web/app/mirai/
+ADD mirai.tar.gz /web/app/mirai/
 
 CMD sleep 200000
