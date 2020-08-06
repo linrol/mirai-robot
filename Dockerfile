@@ -6,4 +6,5 @@ FROM java:8
 
 ADD mirai.tar.gz /web/app/mirai/
 
+
 CMD sleep 200000
