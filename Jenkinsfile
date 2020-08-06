@@ -53,22 +53,25 @@ pipeline {
     }
 
     stage('docker deploy run'){
-      sh '''
-    		#容器ID
-    		CONTAINER_ID=$(docker ps -a | grep "$JOB_NAME" | awk \'{print $1}\')
-
-    		if [[ -n "$CONTAINER_ID" ]]; then
-    			echo "存在$JOB_NAME容器,容器ID=$CID,状态：$(docker inspect $JOB_NAME -f '{{.State.Status}}'),重建docker容器 ..."
-    			docker stop $JOB_NAME
-    	    docker rm -f $JOB_NAME
-    	    docker run -d --name $JOB_NAME $JOB_NAME
-    			echo "$JOB_NAME容器重建完成"
-    		else
-    			echo "不存在$JOB_NAME容器，docker-compose run创建容器..."
-    			docker run -d --name $JOB_NAME $JOB_NAME
-    			echo "$JOB_NAME容器创建完成"
-    		fi
-      '''
+      steps{
+        script{
+          sh '''
+            #容器ID
+            CONTAINER_ID=$(docker ps -a | grep "$JOB_NAME" | awk \'{print $1}\')
+            if [[ -n "$CONTAINER_ID" ]]; then
+              echo "存在$JOB_NAME容器,容器ID=$CID,状态：$(docker inspect $JOB_NAME -f '{{.State.Status}}'),重建docker容器 ..."
+              docker stop $JOB_NAME
+              docker rm -f $JOB_NAME
+              docker run -d --name $JOB_NAME $JOB_NAME
+              echo "$JOB_NAME容器重建完成"
+            else
+              echo "不存在$JOB_NAME容器，docker-compose run创建容器..."
+              docker run -d --name $JOB_NAME $JOB_NAME
+              echo "$JOB_NAME容器创建完成"
+            fi
+          '''
+        }
+      }
     }
 
 
