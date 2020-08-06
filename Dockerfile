@@ -5,3 +5,5 @@
 FROM java:8
 
 ADD miraiOK.zip /web/app/mirai/
+
+CMD sleep 200000
